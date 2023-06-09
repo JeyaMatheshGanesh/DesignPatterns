@@ -1,0 +1,74 @@
+class Duck {
+    FlyBehaviour flybehaviour;
+    QuackBehaviour quackbehaviour;
+
+    public void performfly(){
+        flybehaviour.fly();
+    }
+
+    public void performquack(){
+        quackbehaviour.quack();
+    }
+}
+
+     class Mallard extends Duck {
+    Mallard() {
+        quackbehaviour = new Quack();
+        flybehaviour = new FlyWithWings();
+        System.out.println("Mallard Duck");
+    }
+}
+class Rubber extends Duck{
+    Rubber(){
+        quackbehaviour = new Squeak();
+        flybehaviour = new NoFly();
+        System.out.println("Rubber");
+    }
+}
+
+    interface FlyBehaviour {
+         void fly();
+    }
+
+    class FlyWithWings implements FlyBehaviour {
+        @Override
+        public void fly() {
+            System.out.println("I CAN FLY WITH WINGS");
+        }
+    }
+
+    class NoFly implements FlyBehaviour {
+        @Override
+        public void fly() {
+            System.out.println("I Cant Fly");
+        }
+    }
+
+    interface QuackBehaviour {
+        void quack();
+    }
+
+    class Quack implements QuackBehaviour {
+        public void quack() {
+            System.out.println("I Can Quack");
+        }
+    }
+
+    class Squeak implements QuackBehaviour {
+        @Override
+        public void quack() {
+            System.out.println("I Can squeak");
+        }
+    }
+
+    public class Strategy_Pattern {
+        public static void main(String[] args) {
+                 Duck m = new Mallard();  //Program to an interface and not to an implementation
+                 m.performquack();
+                 m.performfly();
+
+                 Duck r = new Rubber();
+                 r.performfly();
+                 r.performquack();
+        }
+}
