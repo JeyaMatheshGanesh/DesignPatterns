@@ -1,0 +1,86 @@
+import java.util.ArrayList;
+import java.util.List;
+
+public class WeatherData {
+
+     interface Subject {
+        public void register(Observer o);
+
+        public void remove(Observer o);
+
+        public void notification();
+    }
+
+     interface Observer {
+        public void update(float temp, float humidity, float pressure);
+    }
+
+     interface Display {
+        public void display();
+    }
+
+    List<Observer> observers;
+     float temperature;
+     float humidity;
+     float pressure;
+
+    WeatherData() {
+        observers = new ArrayList<>();
+    }
+
+    public void register(Observer o) {
+        observers.add(o);
+    }
+
+    public void remove(Observer o) {
+        observers.remove(o);
+    }
+
+    public void notification() {
+        for (Observer observer : observers) {
+            observer.update(temperature, humidity, pressure);
+        }
+    }
+
+    public void measurementsChanged() {
+        notification();
+    }
+
+    public void setMeasurements(float temperature, float humidity, float pressure) {
+        this.temperature = temperature;
+        this.humidity = humidity;
+        this.pressure = pressure;
+    }
+
+         public class CurrentDisplay implements Observer, Display {
+
+         private float temperature;
+         private float humidity;
+         private WeatherData weatherData;
+
+         public CurrentDisplay(WeatherData weatherData){
+             this.weatherData = weatherData;
+             weatherData.register(this);
+         }
+
+         public void update(float temperature,float humidity,float pressure){
+             this.temperature = temperature;
+             this.humidity = humidity;
+             display();
+         }
+
+         public void display(){
+             System.out.println("Current Conditions :"+temperature+" "+"F degrees"+" "+humidity);
+         }
+    }
+}
+class WeatherStation{
+
+    public static void main(String[]args){
+
+        WeatherData wd = new WeatherData();
+        CurrentDisplay cd = new CurrentDisplay(wd);
+        wd.setMeasurements(80,65,30.4f);
+        wd.setMeasurements(90,72,29.2f);
+    }
+}
