@@ -1,0 +1,54 @@
+//Decorator Pattern
+public class StarBuzz{
+    public static void main(String[]args){
+        Beverage beverage = new DarkRoast();
+        System.out.println(beverage.getDescription()+" "+beverage.cost());
+        Beverage beverage2 = new DarkRoast();
+        beverage2 = new Mocha(beverage2);
+        beverage2 = new Mocha(beverage2);
+        beverage2 = new Whip(beverage2);
+        System.out.println(beverage2.getDescription()+" "+beverage2.cost());
+    }
+}
+ abstract class Beverage{
+    String description = "Unknown Beverage";
+    public String getDescription(){
+        return description;
+    }
+    public abstract double cost();
+}
+abstract class CondimentDecorator extends Beverage{
+    Beverage beverage;
+    public abstract String getDescription();
+    public abstract double cost();
+}
+ class DarkRoast extends Beverage{
+    public DarkRoast(){
+        description = "DarkRoast";
+    }
+    public double cost(){
+        return 1.99;
+    }
+}
+class Mocha extends CondimentDecorator{
+    public Mocha(Beverage beverage){
+        this.beverage = beverage;
+    }
+    public String getDescription(){
+        return beverage.getDescription() + ",Mocha";
+    }
+    public double cost(){
+        return beverage.cost()+0.20;
+    }
+}
+class Whip extends CondimentDecorator{
+    public Whip(Beverage beverage){
+        this.beverage = beverage;
+    }
+    public String getDescription(){
+        return beverage.getDescription()+ ",Whip";
+    }
+    public double cost(){
+        return beverage.cost()+0.30;
+    }
+}
